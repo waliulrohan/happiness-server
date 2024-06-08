@@ -163,5 +163,5 @@ app.use(errorMiddleWare)
 
 
 server.listen( port ,()=>{
-    console.log(`Message eserver is running port: ${port} `)
+    console.log(`Message server is running port: ${port} `)
 })

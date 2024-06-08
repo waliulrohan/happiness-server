@@ -15,7 +15,6 @@ const cookieOptions = {
 async function connectDB(uri) {
   mongoose.connect(uri, {
     w: 'majority',
-
   })
   .then(() => {
     console.log('Connected to MongoDB');
