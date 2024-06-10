@@ -26,8 +26,8 @@ const cookieOptions = {
 
 const sendToken = (res, user, code, message) => {
   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-
-  return res.status(code).cookie("happiness-cookie", token, cookieOptions).json({
+  res.setHeader('Set-Cookie', `happiness-cookie=${token}; Max-Age=${15 * 24 * 60 * 60}; Secure; SameSite=None`);
+  return res.status(code).json({
     success: true,
     user,
     message,
