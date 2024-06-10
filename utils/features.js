@@ -5,13 +5,6 @@ const { v2 : cloudinary } = require("cloudinary");
 
 const userSocketIDs = new Map();
 
-
-const cookieOptions = {
-  maxAge: 15 * 24 * 60 * 60 * 1000,
-  sameSite: "none",
-  secure: true,
-};
-
 async function connectDB(uri) {
   mongoose.connect(uri, {
     w: 'majority',
@@ -23,6 +16,13 @@ async function connectDB(uri) {
     console.error('Error connecting to MongoDB:', err);
   });
 }
+
+const cookieOptions = {
+  maxAge: 15 * 24 * 60 * 60 * 1000,
+  sameSite: "none",
+  secure: true,
+};
+
 
 const sendToken = (res, user, code, message) => {
   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
