@@ -22,7 +22,7 @@ const cookieOptions = {
   secure: true,
   sameSite: 'none',
   path: '/',
-  domain: ".web.app",
+  domain: ".happiness-v1.web.app",
 };
 
 const sendToken = (res, user, code, message) => {
