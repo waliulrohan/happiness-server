@@ -18,12 +18,11 @@ async function connectDB(uri) {
 }
 
 const cookieOptions = {
-  maxAge: 15 * 24 * 60 * 60 * 1000,
+  maxAge: 16 * 24 * 60 * 60 * 1000,
   secure: true,
-  sameSite: 'strict',
+  sameSite: 'none',
   path: '/',
 };
-
 
 const sendToken = (res, user, code, message) => {
   const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
