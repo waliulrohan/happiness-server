@@ -50,6 +50,7 @@ app.set("io", io);
 app.use(express.json())
 app.use(cors(corsOptions))
 app.use(cookieParser())
+app.set("trust proxy", 1);
 
 app.get('/',(req , res)=>{
     res.send('hiiiiii from message')

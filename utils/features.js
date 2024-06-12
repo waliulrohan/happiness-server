@@ -22,7 +22,7 @@ const cookieOptions = {
   secure: true,
   sameSite: 'none',
   path: '/',
-  domain: ".app"
+  domain: ".web.app"
 };
 
 const sendToken = (res, user, code, message) => {
