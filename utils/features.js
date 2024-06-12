@@ -22,7 +22,6 @@ const cookieOptions = {
   secure: true,
   sameSite: 'none',
   path: '/',
-  domain: "happiness-v1.firebaseapp.com"
 };
 
 const sendToken = (res, user, code, message) => {
@@ -32,6 +31,7 @@ const sendToken = (res, user, code, message) => {
     success: true,
     user,
     message,
+    token,
   });
 };
 
