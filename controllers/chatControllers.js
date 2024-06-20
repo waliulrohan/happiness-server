@@ -30,7 +30,7 @@ const newGroupChat = TryCatch(async(req, res, next)=>{
 
 })
 const getMyChats = TryCatch(async(req , res , next)=>{
-    const chats = await Chat.find({members: req.userId}).populate("members" , "name avatar");
+    const chats = await Chat.find({members: req.userId}).populate("members" , "name avatar").sort({ updatedAt: -1 });
     const transformedChats = chats.map(({_id , name ,members , groupChat})=>{
         const otherMember = getOtherMember(members , req.userId);
         return {
@@ -38,12 +38,18 @@ const getMyChats = TryCatch(async(req , res , next)=>{
              groupChat,
              avatar: groupChat ? members.slice(0 ,3).map(({avatar})=> avatar.url ) : [otherMember.avatar.url],
              name: groupChat ? name : otherMember.name,
-             members: members.filter(i => i._id.toString() != req.userId.toString).map(i=> i._id),            
+             members: members.filter(i => i._id.toString() != req.userId.toString()).map(i=> i._id),            
         }
     })
-    return res.status(201).json({
+    const {name = ""} = req.query;
+
+    const filteredChats = transformedChats.filter(chat => {
+        const regex = new RegExp(name, "i");
+        return regex.test(chat.name);
+    });
+    return res.status(200).json({
         success: true,
-        chats: transformedChats,
+        chats: filteredChats,
     })
 })
 

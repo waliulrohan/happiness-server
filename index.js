@@ -19,6 +19,7 @@ const { NEW_MESSAGE, NEW_MESSAGE_ALERT, START_TYPING, STOP_TYPING, CHAT_JOINED, 
 const Message = require('./models/messageModel');
 const { corsOptions } = require('./constants/config');
 const { socketAuth } = require('./middlewares/auth');
+const Chat = require('./models/chatModel');
 
 
 dotenv.config()
@@ -117,6 +118,7 @@ io.on("connection" , (socket)=>{
 
         try {
             Message.create(messageForDB)
+            await Chat.findByIdAndUpdate(chatId, { $set: { updatedAt: new Date() } });
         }catch(error){
             console.log(error)
         }
