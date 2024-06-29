@@ -15,6 +15,10 @@ const messageModel = new Schema({
     content:{
         type: String,
     },
+    seen:{
+      type: Boolean,
+      default: false,
+    },
     attachments: [
         {
           public_id: {

@@ -161,6 +161,7 @@ const getMyProfile = TryCatch(async (req, res, next) => {
 
   const getNotifications =TryCatch(async(req , res , next)=>{
     const requests = await Request.find({receiver: req.userId}).populate("sender", "name avatar");
+    
     const allRequests = requests.map(({ _id, sender }) => ({
      _id,
      sender: {

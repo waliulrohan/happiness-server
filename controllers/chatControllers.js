@@ -350,7 +350,7 @@ const getMessages = TryCatch(async(req, res , next)=>{
         Message.find({chat: chatId}).populate("sender" , "name").skip(skip).limit(limit).sort({createdAt: -1}).lean(),
         Message.countDocuments({chat: chatId})
     ])
-    
+
     const totalPages = Math.ceil(totalMessagesCount / limit) || 0;
     return res.status(200).json({
         success: true,

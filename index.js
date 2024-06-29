@@ -14,7 +14,7 @@ const { v4 : uuid } = require("uuid")
 const { v2 : cloudinary } = require("cloudinary");
 
 const { Server } = require('socket.io');
-const { NEW_MESSAGE, NEW_MESSAGE_ALERT, START_TYPING, STOP_TYPING, CHAT_JOINED, CHAT_LEAVED, CHAT_ONLINE_USERS, ONLINE_USERS } = require('./constants/event');
+const { NEW_MESSAGE, NEW_MESSAGE_ALERT, START_TYPING, STOP_TYPING, CHAT_JOINED, CHAT_LEAVED, CHAT_ONLINE_USERS, ONLINE_USERS, MARK_MESSAGE_AS_SEEN } = require('./constants/event');
 
 const Message = require('./models/messageModel');
 const { corsOptions } = require('./constants/config');
@@ -98,6 +98,7 @@ io.on("connection" , (socket)=>{
               _id: user._id,
               name: user.name,
             },
+            seen: false,
             chat: chatId,
             createdAt: new Date().toISOString(),
           };
@@ -147,6 +148,23 @@ io.on("connection" , (socket)=>{
 
           io.to(membersSocket).emit(CHAT_ONLINE_USERS, Array.from(chatOnlineUsers));
       });
+
+
+// setting message as seen
+      socket.on(MARK_MESSAGE_AS_SEEN , async({chatId , members})=>{
+        try{
+          await Message.updateMany({chat : chatId , seen : false} ,{ $set:{seen : true}})
+
+          const membersSocket = getSockets(members);
+          io.to(membersSocket).emit(MARK_MESSAGE_AS_SEEN , { chatId })
+
+
+        }catch(error){
+          onsole.log(error)
+        }
+      })
+
+
 
     socket.on("disconnect" , ()=>{
         userSocketIDs.delete(user._id);
